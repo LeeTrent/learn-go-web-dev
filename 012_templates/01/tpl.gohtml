@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    table, th, td {
+       border: 1px solid black;
+    }
+    table {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    th {
+      text-align: left;
+    }
+    caption {
+      font-weight: bold;
+    }
+    hr {
+      margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+
+{{range .}}
+<table>
+  <caption>{{.AcaYear}} - {{.Fall.Term}}</caption>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Units</th>
+  </thead>
+  <tbody>
+    {{ range .Fall.Courses}}
+      <tr>
+        <td>{{.Number}} </td>
+        <td>{{.Name}}</td>
+        <td>{{.Units}}</td>
+      </tr>
+    {{end}}
+</tbody>
+<table>
+  <caption>{{.AcaYear}} - {{.Spring.Term}}</caption>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Units</th>
+  </thead>
+  <tbody>
+    {{ range .Spring.Courses}}
+      <tr>
+        <td>{{.Number}} </td>
+        <td>{{.Name}}</td>
+        <td>{{.Units}}</td>
+      </tr>
+    {{end}}
+</tbody>
+{{end}}
+
+</body>
+</html>

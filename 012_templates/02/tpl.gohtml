@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    h1 {
+      font-size: large;
+    }
+    table, th, td {
+       border: 1px solid black;
+    }
+    table {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    th {
+      text-align: left;
+    }
+    caption {
+      font-weight: bold;
+    }
+    hr {
+      margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+  <h1>California Hotels by Region</h1>
+
+{{range .}}
+<table>
+  <caption>{{.Region}}</caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>Zip</th>
+  </thead>
+  <tbody>
+    {{ range .Hotels}}
+      <tr>
+        <td>{{.Name}} </td>
+        <td>{{.Address}}</td>
+        <td>{{.City}}</td>
+        <td>{{.Zip}}</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}
+</body>
+</html>

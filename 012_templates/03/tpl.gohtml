@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    h1 {
+      font-size: large;
+    }
+    table, th, td {
+       border: 1px solid black;
+    }
+    table {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    th {
+      text-align: left;
+    }
+    caption {
+      font-weight: bold;
+    }
+    hr {
+      margin-bottom: 10px;
+    }
+    .price {
+      text-align: right;
+    }
+    </style>
+</head>
+<body>
+  <h1>Vegan Restaurant Menu</h1>
+
+{{range .}}
+<table>
+  <caption>{{.MenuCategory}}</caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+  </thead>
+  <tbody>
+    {{ range .MenuItems}}
+      <tr>
+        <td>{{.Name}} </td>
+        <td>{{.Description}}</td>
+        <td class="price">{{.Price}}</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}
+</body>
+</html>

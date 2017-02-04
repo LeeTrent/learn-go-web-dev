@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    h1 {
+      font-size: large;
+    }
+    table, th, td {
+       border: 1px solid black;
+    }
+    table {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    th {
+      text-align: left;
+    }
+    caption {
+      font-weight: bold;
+    }
+    hr {
+      margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+  <h1>5th Template Assignment (012_hands_on / 09_hands_on)</h1>
+
+<table cellspacing="5" cellpadding="5">
+  <caption>Stock Quotes</caption>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Open</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Close</th>
+      <th>Volume</th>
+      <th>Adj Close</th>
+  </thead>
+  <tbody>
+    {{ range .}}
+      <tr>
+        <td>{{.Date}} </td>
+        <td>{{.Open}}</td>
+        <td>{{.High}}</td>
+        <td>{{.Low}}</td>
+        <td>{{.Close}}</td>
+        <td>{{.Volume}}</td>
+        <td>{{.AdjClose}}</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+</body>
+</html>

@@ -23,27 +23,27 @@ func main() {
 }
 
 func index(resp http.ResponseWriter, _ *http.Request) {
-	handleResponse(resp, "index.gohtml")
+	handleResponse(resp, "index.gohtml", nil)
 }
 
 func about(resp http.ResponseWriter, _ *http.Request) {
-	handleResponse(resp, "about.gohtml")
+	handleResponse(resp, "about.gohtml", nil)
 }
 
 func contact(resp http.ResponseWriter, _ *http.Request) {
-	handleResponse(resp, "contact.gohtml")
+	handleResponse(resp, "contact.gohtml", nil)
 }
 
 func apply(resp http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
-		handleResponse(resp, "applyProcess.gohtml")
+		handleResponse(resp, "applyProcess.gohtml", nil)
 	} else {
-		handleResponse(resp, "apply.gohtml")
+		handleResponse(resp, "apply.gohtml", nil)
 	}
 }
 
-func handleResponse(resp http.ResponseWriter, templateName string) {
-	err := templ.ExecuteTemplate(resp, templateName, nil)
+func handleResponse(resp http.ResponseWriter, templateName string, data interface{}) {
+	err := templ.ExecuteTemplate(resp, templateName, data)
 	handleErrorIfAny(resp, err)
 }
 

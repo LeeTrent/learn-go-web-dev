@@ -24,10 +24,6 @@ _testmain.go
 *.test
 *.prof
 
-# Executable files:
-04_encrypt-pw
-
-
 # WebStorm
 *.iml
 

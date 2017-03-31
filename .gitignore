@@ -20,8 +20,13 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+*.app
 *.test
 *.prof
+
+# Executable files:
+04_encrypt-pw
+
 
 # WebStorm
 *.iml

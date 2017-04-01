@@ -4,20 +4,17 @@ import (
 	"html/template"
 	"net/http"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/LeeTrent/usermgr"
-	"github.com/LeeTrent/sessionmgr"
-	"github.com/LeeTrent/cookieutil"
 )
 
 const cookieName string = "session"
 
-var userMgr usermgr.UserMgr
-var sessionMgr sessionmgr.SessionMgr
+var userMgr UserMgr
+var sessionMgr SessionMgr
 var tpl *template.Template
 
 func init() {
-	userMgr = usermgr.UserMgr{}
-	sessionMgr = sessionmgr.SessionMgr{}
+	userMgr = UserMgr{}
+	sessionMgr = SessionMgr{}
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
@@ -58,7 +55,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		ln := req.FormValue("lastname")
 
 		// username taken?
-		if userMgr.UserNameIsTaken(un) {
+		if userMgr.userNameIsTaken(un) {
 			http.Error(w, "Username already taken", http.StatusForbidden)
 			return
 		}
@@ -71,17 +68,17 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 
 		// create user
-		user, err := userMgr.CreateUser(encyptedPW, un, fn, ln)
+		user, err := userMgr.createUser(encyptedPW, un, fn, ln)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// create session
-		session := sessionMgr.CreateSession(user.UserName)
+		session := sessionMgr.createSession(user.UserName)
 
 		// create and set cookie
-		cookieutil.CreateAndSetCookie(cookieName, session.SessionId, w)
+		CreateAndSetCookie(cookieName, session.sessionId, w)
 
 		// redirect
 		http.Redirect(w, req, "/", http.StatusSeeOther)
@@ -91,21 +88,21 @@ func signup(w http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(w, "signup.gohtml", nil)
 }
 
-func getUser(w http.ResponseWriter, req *http.Request) usermgr.User {
-	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
+func getUser(w http.ResponseWriter, req *http.Request) User {
+	cookie := GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
-	userName := sessionMgr.GetUserName(sessionId)
-	user := userMgr.GetUser(userName)
+	userName := sessionMgr.getUserName(sessionId)
+	user := userMgr.getUser(userName)
 	return user
 }
 
 func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
-	if cookieutil.HasCookie(cookieName, req) == false {
+	if HasCookie(cookieName, req) == false {
 		return false
 	}
-	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
+	cookie := GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
-	userName := sessionMgr.GetUserName(sessionId)
+	userName := sessionMgr.getUserName(sessionId)
 	_, ok := userMgr[userName]
 	return ok
 }

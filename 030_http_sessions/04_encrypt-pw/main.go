@@ -12,12 +12,12 @@ import (
 const cookieName string = "session"
 
 var userMgr *usermgr.UserMgr
-var sessionMgr sessionmgr.SessionMgr
+var sessionMgr *sessionmgr.SessionMgr
 var tpl *template.Template
 
 func init() {
 	userMgr = usermgr.NewUserMgr()
-	sessionMgr = sessionmgr.SessionMgr{}
+	sessionMgr = sessionmgr.NewSessionMgr()
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 

@@ -6,13 +6,14 @@
 </head>
 <body>
 
-{{if .First}}
+{{if .FirstName}}
 USER NAME {{.UserName}}<br>
 PASSWORD {{.Password}}<br>
-FIRST {{.First}}<br>
-LAST {{.Last}}<br>
+FIRST {{.FirstName}}<br>
+LAST {{.LastName}}<br>
 {{else}}
 <h2><a href="/signup">sign up</a></h2>
+<h2><a href="/login">log in</a></h2>
 {{end}}
 
 <br>

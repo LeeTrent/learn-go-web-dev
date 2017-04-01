@@ -11,13 +11,13 @@ import (
 
 const cookieName string = "session"
 
-var userMgr usermgr.UserMgr
-var sessionMgr sessionmgr.SessionMgr
+var userMgr *usermgr.UserMgr
+var sessionMgr *sessionmgr.SessionMgr
 var tpl *template.Template
 
 func init() {
-	userMgr = usermgr.UserMgr{}
-	sessionMgr = sessionmgr.SessionMgr{}
+	userMgr = usermgr.NewUserMgr()
+	sessionMgr = sessionmgr.NewSessionMgr()
 	tpl = template.Must(template.ParseGlob("templates/*"))
 
 	// seed database with at least one user
@@ -29,6 +29,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/bar", bar)
 	http.HandleFunc("/signup", signup)
+	http.HandleFunc("/login", login)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
 }

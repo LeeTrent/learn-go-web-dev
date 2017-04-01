@@ -11,7 +11,7 @@ import (
 
 const cookieName string = "session"
 
-var userMgr usermgr.UserMgr
+var userMgr *usermgr.UserMgr
 var sessionMgr sessionmgr.SessionMgr
 var tpl *template.Template
 

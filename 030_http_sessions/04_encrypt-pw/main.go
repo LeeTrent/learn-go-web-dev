@@ -16,7 +16,7 @@ var sessionMgr sessionmgr.SessionMgr
 var tpl *template.Template
 
 func init() {
-	userMgr = usermgr.UserMgr{}
+	userMgr = usermgr.NewUserMgr()
 	sessionMgr = sessionmgr.SessionMgr{}
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
@@ -95,7 +95,7 @@ func getUser(w http.ResponseWriter, req *http.Request) usermgr.User {
 	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
 	userName := sessionMgr.GetUserName(sessionId)
-	user := userMgr.GetUser(userName)
+	user, _ := userMgr.GetUser(userName)
 	return user
 }
 
@@ -106,6 +106,6 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
 	userName := sessionMgr.GetUserName(sessionId)
-	_, ok := userMgr[userName]
+	_, ok := userMgr.GetUser(userName)
 	return ok
 }

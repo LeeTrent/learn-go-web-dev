@@ -1,21 +1,28 @@
 package main
 
 import (
+	"github.com/LeeTrent/cookieutil"
+	"github.com/LeeTrent/sessionmgr"
+	"github.com/LeeTrent/usermgr"
+	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
-	"golang.org/x/crypto/bcrypt"
 )
 
 const cookieName string = "session"
 
-var userMgr UserMgr
-var sessionMgr SessionMgr
+var userMgr usermgr.UserMgr
+var sessionMgr sessionmgr.SessionMgr
 var tpl *template.Template
 
 func init() {
-	userMgr = UserMgr{}
-	sessionMgr = SessionMgr{}
+	userMgr = usermgr.UserMgr{}
+	sessionMgr = sessionmgr.SessionMgr{}
 	tpl = template.Must(template.ParseGlob("templates/*"))
+
+	// seed database with at least one user
+	bs, _ := bcrypt.GenerateFromPassword([]byte("mypassword"), bcrypt.MinCost)
+	userMgr.CreateUser(bs, "casey@casey.com", "Casey", "Trent")
 }
 
 func main() {
@@ -55,7 +62,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		ln := req.FormValue("lastname")
 
 		// username taken?
-		if userMgr.userNameIsTaken(un) {
+		if userMgr.UserNameIsTaken(un) {
 			http.Error(w, "Username already taken", http.StatusForbidden)
 			return
 		}
@@ -68,17 +75,17 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 
 		// create user
-		user, err := userMgr.createUser(encyptedPW, un, fn, ln)
+		user, err := userMgr.CreateUser(encyptedPW, un, fn, ln)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// create session
-		session := sessionMgr.createSession(user.UserName)
+		session := sessionMgr.CreateSession(user.UserName)
 
 		// create and set cookie
-		CreateAndSetCookie(cookieName, session.sessionId, w)
+		cookieutil.CreateAndSetCookie(cookieName, session.SessionId, w)
 
 		// redirect
 		http.Redirect(w, req, "/", http.StatusSeeOther)
@@ -88,21 +95,62 @@ func signup(w http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(w, "signup.gohtml", nil)
 }
 
-func getUser(w http.ResponseWriter, req *http.Request) User {
-	cookie := GetAndSetCookie(cookieName, w, req)
+func login(rw http.ResponseWriter, req *http.Request) {
+
+	if alreadyLoggedIn(rw, req) {
+		http.Redirect(rw, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	// process form login form submission
+	if req.Method == http.MethodPost {
+		// get form values
+		un := req.FormValue("username")
+		pw := req.FormValue("password")
+
+
+		// validate user name
+		user, found := userMgr.GetUser(un)
+		if found == false {
+			http.Error(rw, "Invalid user name or password", http.StatusForbidden)
+			return
+		}
+
+		// validate password
+		err := bcrypt.CompareHashAndPassword(user.Password, []byte(pw))
+		if err != nil {
+			http.Error(rw, "Invalid user name or password", http.StatusForbidden)
+			return
+		}
+
+		// create session
+		session := sessionMgr.CreateSession(user.UserName)
+
+		// create and set cookie
+		cookieutil.CreateAndSetCookie(cookieName, session.SessionId, rw)
+
+		// redirect
+		http.Redirect(rw, req, "/", http.StatusSeeOther)
+		return
+	}
+	tpl.ExecuteTemplate(rw, "login.gohtml", nil)
+}
+
+func getUser(w http.ResponseWriter, req *http.Request) usermgr.User {
+	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
-	userName := sessionMgr.getUserName(sessionId)
-	user := userMgr.getUser(userName)
+	userName := sessionMgr.GetUserName(sessionId)
+	user, _ := userMgr.GetUser(userName)
 	return user
 }
 
 func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
-	if HasCookie(cookieName, req) == false {
+	if cookieutil.HasCookie(cookieName, req) == false {
 		return false
 	}
-	cookie := GetAndSetCookie(cookieName, w, req)
+	cookie := cookieutil.GetAndSetCookie(cookieName, w, req)
 	sessionId := cookie.Value
-	userName := sessionMgr.getUserName(sessionId)
-	_, ok := userMgr[userName]
+	userName := sessionMgr.GetUserName(sessionId)
+	_, ok := userMgr.GetUser(userName)
 	return ok
 }

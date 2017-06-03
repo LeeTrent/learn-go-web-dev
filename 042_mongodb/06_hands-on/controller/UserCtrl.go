@@ -92,38 +92,3 @@ func (uc UserController) DeleteUser(w http.ResponseWriter, r *http.Request, p ht
 		fmt.Fprintf(w, "User with ID '%s' not found\n", id)
 	}
 }
-
-//func (uc UserController) RetrieveUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-//	// Grab id from Request
-//	id := p.ByName("id")
-//
-//	// Retrieve user from data store
-//	u := uc.userDao.Retrieve(id)
-//
-//	// Marshal User model object to JSON
-//	uj, err := json.Marshal(u)
-//	if err != nil {
-//		fmt.Println(err)
-//	}
-//
-//	// Prepare HTTP Header
-//	w.Header().Set("Content-Type", "application/json")
-//	w.WriteHeader(http.StatusOK) // 200
-//
-//	// Write response
-//	fmt.Fprintf(w, "%s\n", uj)
-//}
-
-//func (uc UserController) DeleteUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-//	// Grab id from Request
-//	id := p.ByName("id")
-//
-//	// Delete user from data store
-//	uc.userDao.Delete(id)
-//
-//	// Prepare HTTP Header
-//	w.WriteHeader(http.StatusOK) // 200
-//
-//	// Write response
-//	fmt.Fprint(w, "Deleted user", id, "\n")
-//}

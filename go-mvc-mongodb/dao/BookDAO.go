@@ -1,15 +1,15 @@
 package dao
 
 import (
- 	"github.com/LeeTrent/ToddMcleod/learn-go-web-dev/go-mvc-mongodb/model"
-	"gopkg.in/mgo.v2"
 	"fmt"
+	"github.com/LeeTrent/ToddMcleod/learn-go-web-dev/go-mvc-mongodb/model"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	dbURL = "mongodb://MyApplication:~da6f9rMb5d8w@localhost/bookstore"
-	dbName = "bookstore"
+	dbURL            = "mongodb://MyApplication:MyPassword@localhost/bookstore"
+	dbName           = "bookstore"
 	dbCollectionName = "books"
 )
 
@@ -54,7 +54,7 @@ func NewBookDAO() *BookDAO {
 	return &BookDAO{books: mgoCollection}
 }
 
-func (dao *BookDAO) Create(book model.Book) (model.Book, error){
+func (dao *BookDAO) Create(book model.Book) (model.Book, error) {
 
 	err := dao.books.Insert(book)
 
@@ -67,7 +67,7 @@ func (dao *BookDAO) Create(book model.Book) (model.Book, error){
 
 func (dao *BookDAO) Update(book model.Book) (model.Book, error) {
 
-	err := dao.books.Update(bson.M { "isbn" : book.Isbn }, &book)
+	err := dao.books.Update(bson.M{"isbn": book.Isbn}, &book)
 
 	if err != nil {
 		return book, err
@@ -78,7 +78,7 @@ func (dao *BookDAO) Update(book model.Book) (model.Book, error) {
 
 func (dao *BookDAO) Delete(isbn string) (bool, error) {
 
-	err := dao.books.Remove( bson.M { "isbn" : isbn } )
+	err := dao.books.Remove(bson.M{"isbn": isbn})
 
 	if err != nil {
 		return false, err
@@ -91,7 +91,7 @@ func (dao *BookDAO) RetrieveAll() ([]model.Book, error) {
 
 	books := []model.Book{}
 
-	err := dao.books.Find( bson.M {} ).All( &books )
+	err := dao.books.Find(bson.M{}).All(&books)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (dao *BookDAO) RetrieveByISBN(isbn string) (model.Book, error) {
 
 	book := model.Book{}
 
-	err := dao.books.Find( bson.M {"isbn" : isbn} ).One(&book)
+	err := dao.books.Find(bson.M{"isbn": isbn}).One(&book)
 	if err != nil {
 		return book, err
 	}
@@ -125,7 +125,7 @@ func (dao *BookDAO) retrieve(label, value string) ([]model.Book, error) {
 
 	books := []model.Book{}
 
-	err := dao.books.Find( bson.M { label : value} ).All( &books )
+	err := dao.books.Find(bson.M{label: value}).All(&books)
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,17 @@ This application:
 # Database
 PostgreSQL running on localhost
 
+# Table Description:
+            Table "public.books"
+ Column |          Type          | Modifiers 
+--------+------------------------+-----------
+ isbn   | character(14)          | not null
+ title  | character varying(255) | not null
+ author | character varying(255) | not null
+ price  | numeric(5,2)           | not null
+Indexes:
+    "books_pkey" PRIMARY KEY, btree (isbn)
+
 # How to run
 1. Execute the following in root folder where main.go resides: go run *.go
 2. Past the folloing URL in your favorite web browser

@@ -22,4 +22,4 @@ Indexes:
 ```
 # How to run
 1. Execute the following in root folder where main.go resides: ```go run *.go```
-2. Past the following URL in your favorite web browser: ```http://localhost:8080/```
+2. Paste the following URL in your favorite web browser: ```http://localhost:8080/```

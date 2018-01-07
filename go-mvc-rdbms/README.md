@@ -8,6 +8,6 @@ This application:
 PostgreSQL running on localhost
 
 # How to run
-1. go run *.go
+1. Execute the following in root folder where main.go resides: go run *.go
 2. Past the folloing URL in your favorite web browser
 http://localhost:8080/

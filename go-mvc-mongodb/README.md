@@ -2,7 +2,7 @@
 This application:
 1. was created for pedagogical purposes
 2. attempts to apply the Model-View-Controller (MVC)design pattern in Go.
-3. attempts to conform to REST API principles by using the "julienschmidt/httprouter" library
+3. attempts to conform to REST API principles by using the 'julienschmidt/httprouter' library
 4. provides CRUD operations on one collection named 'books' in a document database (MongoDB)
 
 # Database

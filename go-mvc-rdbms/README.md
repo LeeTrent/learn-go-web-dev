@@ -7,7 +7,7 @@ This application:
 # Database
 PostgreSQL running on localhost
 
-# Table Description:
+## Table Description:
 ```
         Table "public.books"
  Column |          Type          | Modifiers 
@@ -20,6 +20,6 @@ Indexes:
     "books_pkey" PRIMARY KEY, btree (isbn)
 ```
 # How to run
-1. Execute the following in root folder where main.go resides: go run *.go
+1. Execute the following in root folder where main.go resides: ```go run *.go```
 2. Past the folloing URL in your favorite web browser
-http://localhost:8080/
+```http://localhost:8080/```

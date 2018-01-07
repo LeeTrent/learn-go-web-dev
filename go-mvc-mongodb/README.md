@@ -2,7 +2,8 @@
 This application:
 1. was created for pedagogical purposes
 2. attempts to apply the Model-View-Controller (MVC)design pattern in Go.
-3. Attempts to conform to REST API principles by using the "julienschmidt/httprouter" library
+3. attempts to conform to REST API principles by using the "julienschmidt/httprouter" library
+4. provides CRUD operations on one collection named 'books' in a document database (MongoDB)
 
 # Database
 MongoDB running on localhost
@@ -16,7 +17,7 @@ mongod
 ```
 use bookstore
 ```
-### Create and populate 'books' collection':
+### Create and populate 'books' collection:
 ```
 db.books.insert([{"isbn":"978-1505255607","title":"The Time Machine","author":"H. G. Wells","price":5.99},{"isbn":"978-1503261960","title":"Wind Sand \u0026 Stars","author":"Antoine","price":14.99},{"isbn":"978-1503261961","title":"West With The Night","author":"Beryl Markham","price":14.99}])
 ```
